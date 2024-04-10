@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prayer/bloc/theme/theme_cubit.dart';
-import 'package:prayer/repositories/settings/settings.dart';
+import 'package:prayer/features/topics/bloc/prayer_topics_bloc.dart';
+import 'package:prayer/repositories/repositories.dart';
 import 'package:prayer/router/router.dart';
 import 'package:prayer/ui/theme/theme.dart';
+import 'package:realm/realm.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> main() async {
@@ -11,7 +13,14 @@ Future<void> main() async {
 
   final preferences = await SharedPreferences.getInstance();
 
+  final realm = Realm(
+    Configuration.local([
+      PrayerTopic.schema,
+    ]),
+  );
+
   runApp(PrayerApp(
+    realm: realm,
     preferences: preferences,
   ));
 }
@@ -19,9 +28,11 @@ Future<void> main() async {
 class PrayerApp extends StatefulWidget {
   const PrayerApp({
     super.key,
+    required this.realm,
     required this.preferences,
   });
 
+  final Realm realm;
   final SharedPreferences preferences;
 
   @override
@@ -37,6 +48,8 @@ class _PrayerAppState extends State<PrayerApp> {
       preferences: widget.preferences,
     );
 
+    final prayerTopicsRepository = PrayerTopicsRepository(realm: widget.realm);
+
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -44,6 +57,11 @@ class _PrayerAppState extends State<PrayerApp> {
             settingsRepository: settingsRepository,
           ),
         ),
+        BlocProvider(
+          create: (context) => PrayerTopicsBloc(
+            prayerTopicsRepository: prayerTopicsRepository,
+          ),
+        )
       ],
       child: BlocBuilder<ThemeCubit, ThemeState>(
         builder: (context, state) {
