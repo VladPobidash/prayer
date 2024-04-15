@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prayer/bloc/theme/theme_cubit.dart';
+import 'package:prayer/features/results/bloc/prayer_results_bloc.dart';
 import 'package:prayer/features/topics/bloc/prayer_topics_bloc.dart';
 import 'package:prayer/repositories/repositories.dart';
 import 'package:prayer/router/router.dart';
@@ -16,6 +17,7 @@ Future<void> main() async {
   final realm = Realm(
     Configuration.local([
       PrayerTopic.schema,
+      PrayerResult.schema,
     ]),
   );
 
@@ -48,8 +50,6 @@ class _PrayerAppState extends State<PrayerApp> {
       preferences: widget.preferences,
     );
 
-    final prayerTopicsRepository = PrayerTopicsRepository(realm: widget.realm);
-
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -59,7 +59,13 @@ class _PrayerAppState extends State<PrayerApp> {
         ),
         BlocProvider(
           create: (context) => PrayerTopicsBloc(
-            prayerTopicsRepository: prayerTopicsRepository,
+            prayerTopicsRepository: PrayerTopicsRepository(realm: widget.realm),
+          ),
+        ),
+        BlocProvider(
+          create: (context) => PrayerResultsBloc(
+            prayerResultsRepository:
+                PrayerResultsRepository(realm: widget.realm),
           ),
         )
       ],
