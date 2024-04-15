@@ -28,7 +28,12 @@ class PrayerTopicsBloc extends Bloc<PrayerTopicsEvent, PrayerTopicsState> {
     try {
       emit(PrayerTopicLoading());
       final topics = await _prayerTopicsRepository.getAll();
-      emit(PrayerTopicsListLoaded(topics: topics));
+
+      if (topics.isNotEmpty) {
+        emit(PrayerTopicsListLoaded(topics: topics));
+      } else {
+        emit(PrayerTopicInitial());
+      }
     } catch (e) {
       log(e.toString());
       emit(const PrayerTopicFailure('Something went wrong'));

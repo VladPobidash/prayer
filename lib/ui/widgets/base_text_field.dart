@@ -10,7 +10,7 @@ class BaseTextField extends StatelessWidget {
   final bool enabled;
   final Color fillColor;
   final int? maxLength;
-  final Function onChange;
+  final Function(String)? onChanged;
 
   const BaseTextField({
     super.key,
@@ -23,7 +23,7 @@ class BaseTextField extends StatelessWidget {
     this.enabled = true,
     this.fillColor = Colors.white,
     this.maxLength,
-    required this.onChange,
+    this.onChanged,
   });
 
   @override
@@ -31,9 +31,7 @@ class BaseTextField extends StatelessWidget {
     final theme = Theme.of(context);
 
     return TextFormField(
-      onChanged: (value) {
-        onChange(value);
-      },
+      onChanged: onChanged,
       validator: (val) => val!.isEmpty ? 'required' : null,
       keyboardType: inputType,
       obscureText: obscureText,
