@@ -36,14 +36,15 @@ class _PrayerResultBottomSheetState extends State<PrayerResultBottomSheet> {
         behavior: HitTestBehavior.opaque,
         onTap: () => FocusScope.of(context).unfocus(),
         child: Container(
-          height: 250,
+          height: 550,
           padding: const EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Результат', style: theme.textTheme.titleMedium),
+              Text('Результат молитви', style: theme.textTheme.titleMedium),
               const SizedBox(height: 4),
               BaseTextField(
+                autofocus: true,
                 hintText: "Опиши результат молитви",
                 controller: _summaryController,
                 inputType: TextInputType.multiline,

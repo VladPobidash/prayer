@@ -8,6 +8,7 @@ class BaseTextField extends StatelessWidget {
   final Widget? suffixIcon;
   final bool obscureText;
   final bool enabled;
+  final bool autofocus;
   final Color fillColor;
   final int? maxLength;
   final Function(String)? onChanged;
@@ -21,6 +22,7 @@ class BaseTextField extends StatelessWidget {
     this.suffixIcon,
     this.obscureText = false,
     this.enabled = true,
+    this.autofocus = false,
     this.fillColor = Colors.white,
     this.maxLength,
     this.onChanged,
@@ -39,6 +41,7 @@ class BaseTextField extends StatelessWidget {
       maxLines: inputType == TextInputType.multiline ? 3 : 1,
       controller: controller,
       enabled: enabled,
+      autofocus: autofocus,
       decoration: InputDecoration(
         counterText: "",
         fillColor: fillColor,

@@ -103,8 +103,10 @@ class _TopicsScreenState extends State<TopicsScreen> {
       backgroundColor: Colors.transparent,
       elevation: 0,
       context: context,
-      builder: (context) => const Padding(
-        padding: EdgeInsets.only(top: 60),
+      // ignore: prefer_const_constructors
+      builder: (context) => Padding(
+        padding: const EdgeInsets.only(top: 60),
+        // ignore: prefer_const_constructors
         child: PrayerResultBottomSheet(),
       ),
     );
